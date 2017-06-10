@@ -1,8 +1,10 @@
 #sena
 #27-05-17
 
-# git config remote.origin.url 
-# git@github.com:rpsantosa/sena.git
+# git remote add origin https://github.com/rpsantosa/sena.git
+# git config --global user.email "ricardo_paixao_santos@yahoo.com.br"
+# git config --global user.name "rpsantosa"
+# git config remote.origin.url  git@github.com:rpsantosa/sena.git
 # https://github.com/rpsantosa/sena.git
 #probabilities
 out<-vector()
