@@ -56,6 +56,6 @@ rlistd<-ldply(.data=rlist,.fun=cbind)
 #   g <- ggplot(r, aes(Var1,Freq))
 #   g + geom_col()
 #   plot(r)
-# }
+# } 
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 #teste #
