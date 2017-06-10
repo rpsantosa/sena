@@ -52,4 +52,4 @@ for(i in 1:6){
   plot(r)
 }
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
-#teste
+#teste #
