@@ -1,7 +1,9 @@
 #sena
 #27-05-17
 
-
+# git config remote.origin.url 
+# git@github.com:rpsantosa/sena.git
+# https://github.com/rpsantosa/sena.git
 #probabilities
 out<-vector()
 fs<-function(x){ 1/(choose(6,x)*choose(54,6-x)/choose(60,6))}
@@ -38,18 +40,22 @@ u<-table(unlist(txlast));u<-sort(u,decreasing=T)
 
 # for each ten
 library(ggplot2)
+library(plyr)
 tx<-sapply(tbx,as.integer)
 fet<-function(i,tx){
   uu<-table(tx[,i])
   uu<-sort(uu,decreasing=T) 
   return(as.data.frame(uu))
 }
-#r<-sapply(1:3,FUN=fet,tx=tx)
-for(i in 1:6){
-  r<-fet(i,tx)
-  g <- ggplot(r, aes(Var1,Freq))
-  g + geom_col()
-  plot(r)
-}
+#frequencies in each draw
+rlist<-lapply(1:6, FUN = fet, tx=tx);names(rlist)<-1:6
+rlistd<-ldply(.data=rlist,.fun=cbind)
+
+# for(i in 1:6){
+#   r<-fet(i,tx)
+#   g <- ggplot(r, aes(Var1,Freq))
+#   g + geom_col()
+#   plot(r)
+# }
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 #teste #
