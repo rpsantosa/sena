@@ -1,6 +1,7 @@
 #sena
 #27-05-17
-
+# to seve pass in mac os
+# git config --global credential.helper osxkeychain  
 # git remote add origin https://github.com/rpsantosa/sena.git
 # git config --global user.email "ricardo_paixao_santos@yahoo.com.br"
 # git config --global user.name "rpsantosa"
