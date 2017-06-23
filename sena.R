@@ -54,6 +54,16 @@ fet<-function(i,tx){
 rlist<-lapply(1:6, FUN = fet, tx=tx);names(rlist)<-1:6
 rlistd<-ldply(.data=rlist,.fun=cbind)
 
+# subsetting data: data.frame and data.table
+#rlistd[which(rlistd$Var1==4),]  # subsetting data.frame
+library(data.table)
+rl<-data.table(rlistd)
+rl[Var1==4]                   # using data.table
+rl[,Var2:=as.integer(as.character(rl[,Var1]))]
+rlo<-order(rl[,Var2])
+rl<-rl[rlo]
+g<-ggplot(rl, aes(x=as.factor(Var2),y=Freq))
+g + geom_col(aes(fill = .id)) + facet_grid(.id~ .)
 # for(i in 1:6){
 #   r<-fet(i,tx)
 #   g <- ggplot(r, aes(Var1,Freq))
@@ -62,3 +72,30 @@ rlistd<-ldply(.data=rlist,.fun=cbind)
 # } 
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 #teste #
+
+#### language hints
+mtcars %>%
+  split(.$cyl) %>% # from base R
+  map(~ lm(mpg ~ wt, data = .)) %>%
+  map(summary) %>%
+  map_dbl("r.squared")
+
+
+x<-mtcars %>%  split(.$cyl)
+y<-x %>% map(~ lm(mpg ~ wt, data = .)) %>% 
+map(summary) %>%
+map_dbl("r.squared")
+
+x1 <- list(
+  c(0.27, 0.37, 0.57, 0.91, 0.20),
+  c(0.90, 0.94, 0.66, 0.63, 0.06), 
+  c(0.21, 0.18, 0.69, 0.38, 0.77)
+)
+x2 <- list(
+  c(0.50, 0.72, 0.99, 0.38, 0.78), 
+  c(0.93, 0.21, 0.65, 0.13, 0.27), 
+  c(0.39, 0.01, 0.38, 0.87, 0.34)
+)
+
+threshold <- function(x, cutoff = 0.8) x[x > cutoff]
+x1 %>% sapply(threshold) %>% str()
