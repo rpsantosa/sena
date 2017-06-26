@@ -19,12 +19,23 @@ data.frame('k'=1:6,'p'=out)
 
 #data
 library(XML)
-dez<-c( rep('character',7),rep(NULL,13))
+#dez<-c( rep('character',7),rep(NULL,13))
+## mac solution
+temp <- tempfile()
+download.file('http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip',temp)
+u<-unzip(temp, files = "D_MEGA.HTM")
+tables=readHTMLTable(u, stringsAsFactors=F ,colClasses=dez)[[1]]
+
+# u<-"/Users/ricardo/Downloads/D_megase.zip"  
+# u1<-unzip(., files  = 'D_MEGA.HTM')  
+# tables=readHTMLTable(u1, stringsAsFactors=F ,colClasses=dez)[[1]]
+# ## end mac solution
+
 u<-"file:///Users/ricardo/Desktop/projects/sena/data/D_MEGA.HTM"
 u<-"file:///home/ricardo/hd3/projects/sena/data/D_MEGA.HTM"
 #/home/ricardo/hd3/projects/sena/data
 tables=readHTMLTable(u, stringsAsFactors=F ,colClasses=dez)[[1]]
-tbx<-tables[!is.na(tables[,3]),][,-c(11,12)][,c(3:8)]
+tbx<-tables[!is.na(tables[,3]),][,c(3:8)]
 tx<-sapply(tbx,as.integer)
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 plot(u)
