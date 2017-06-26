@@ -7,6 +7,15 @@
 # git config --global user.name "rpsantosa"
 # git config remote.origin.url  git@github.com:rpsantosa/sena.git
 # https://github.com/rpsantosa/sena.git
+# if the origin is wrong
+# git remote remove origin
+# git remote add origin git@github.com:rpsantosa/sena.git
+
+#######to troubleshooting########################
+# git remote -v  # if remote nickname is origin
+# git push -u origin master ( to activate buttons on git panel)
+# git status         ( if it is the right directory)
+
 #probabilities
 out<-vector()
 fs<-function(x){ 1/(choose(6,x)*choose(54,6-x)/choose(60,6))}
@@ -24,19 +33,15 @@ library(XML)
 temp <- tempfile()
 download.file('http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip',temp)
 u<-unzip(temp, files = "D_MEGA.HTM")
-tables=readHTMLTable(u, stringsAsFactors=F ,colClasses=dez)[[1]]
-
-# u<-"/Users/ricardo/Downloads/D_megase.zip"  
-# u1<-unzip(., files  = 'D_MEGA.HTM')  
-# tables=readHTMLTable(u1, stringsAsFactors=F ,colClasses=dez)[[1]]
+tables=readHTMLTable(u, stringsAsFactors=F )[[1]]
 # ## end mac solution
-
-u<-"file:///Users/ricardo/Desktop/projects/sena/data/D_MEGA.HTM"
-u<-"file:///home/ricardo/hd3/projects/sena/data/D_MEGA.HTM"
+#
+# u<-"file:///Users/ricardo/Desktop/projects/sena/data/D_MEGA.HTM"
+# u<-"file:///home/ricardo/hd3/projects/sena/data/D_MEGA.HTM"
 #/home/ricardo/hd3/projects/sena/data
-tables=readHTMLTable(u, stringsAsFactors=F ,colClasses=dez)[[1]]
-tbx<-tables[!is.na(tables[,3]),][,c(3:8)]
-tx<-sapply(tbx,as.integer)
+#tables=readHTMLTable(u, stringsAsFactors=F)[[1]]
+tbx<-tables[!is.na(tables[,3]),]
+tx<-sapply(tbx[,c(3:8)],as.integer)
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 plot(u)
 # 5  53  51  23   4  10  33  17  42  54  28  41  13  30  24  43   2  16  52  50  32  27  29 
@@ -55,7 +60,8 @@ u<-table(unlist(txlast));u<-sort(u,decreasing=T)
 # for each ten
 library(ggplot2)
 library(plyr)
-tx<-sapply(tbx,as.integer)
+library(tidyverse)
+tx<-sapply(tbx[,c(3:8)],as.integer)
 fet<-function(i,tx){
   uu<-table(tx[,i])
   uu<-sort(uu,decreasing=T) 
@@ -69,18 +75,12 @@ rlistd<-ldply(.data=rlist,.fun=cbind)
 #rlistd[which(rlistd$Var1==4),]  # subsetting data.frame
 library(data.table)
 rl<-data.table(rlistd)
-rl[Var1==4]                   # using data.table
+#rl[Var2==4]                   # using data.table
 rl[,Var2:=as.integer(as.character(rl[,Var1]))]
 rlo<-order(rl[,Var2])
 rl<-rl[rlo]
 g<-ggplot(rl, aes(x=as.factor(Var2),y=Freq))
-g + geom_col(aes(fill = .id)) + facet_grid(.id~ .)
-# for(i in 1:6){
-#   r<-fet(i,tx)
-#   g <- ggplot(r, aes(Var1,Freq))
-#   g + geom_col()
-#   plot(r)
-# } 
+g + geom_col(aes(fill = .id)) + geom_hline(aes(yintercept=mean(Freq)))+facet_grid(.id~ .) 
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 #teste #
 
