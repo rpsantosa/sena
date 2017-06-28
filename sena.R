@@ -28,18 +28,21 @@ data.frame('k'=1:6,'p'=out)
 
 #data
 library(XML)
-#dez<-c( rep('character',7),rep(NULL,13))
-## mac solution
+
+     ## on line solution
 temp <- tempfile()
 download.file('http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip',temp)
 u<-unzip(temp, files = "D_MEGA.HTM")
 tables=readHTMLTable(u, stringsAsFactors=F )[[1]]
-# ## end mac solution
-#
-# u<-"file:///Users/ricardo/Desktop/projects/sena/data/D_MEGA.HTM"
+     ## end mac solution
+
+     ## file offline solution
+# u<-c("~/Desktop/projects/sena1/D_MEGA.HTM")  
 # u<-"file:///home/ricardo/hd3/projects/sena/data/D_MEGA.HTM"
 #/home/ricardo/hd3/projects/sena/data
 #tables=readHTMLTable(u, stringsAsFactors=F)[[1]]
+     ### end offline solution
+
 tbx<-tables[!is.na(tables[,3]),]
 tx<-sapply(tbx[,c(3:8)],as.integer)
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
@@ -62,6 +65,7 @@ library(ggplot2)
 library(plyr)
 library(tidyverse)
 tx<-sapply(tbx[,c(3:8)],as.integer)
+colSums(tx)/dim(tx)[1]
 fet<-function(i,tx){
   uu<-table(tx[,i])
   uu<-sort(uu,decreasing=T) 
@@ -81,8 +85,14 @@ rlo<-order(rl[,Var2])
 rl<-rl[rlo]
 g<-ggplot(rl, aes(x=as.factor(Var2),y=Freq))
 g + geom_col(aes(fill = .id)) + geom_hline(aes(yintercept=mean(Freq)))+facet_grid(.id~ .) 
+
+#chances of any number in 1-60 be drawn
+sum(1/60:55)   #0.10444
+
 u<-table(unlist(tx));u<-sort(u,decreasing=T) 
 #teste #
+tx<-tx %>%
+x<-apply(.,2,table)#;x<-data.frame(x);colnames(x)<-1:6
 
 #### language hints
 mtcars %>%
