@@ -11,6 +11,10 @@
 # git remote remove origin
 # git remote add origin git@github.com:rpsantosa/sena.git
 
+#first push to force the computer files overwrite those in gitrepository
+git push -f origin master  
+
+
 #######to troubleshooting########################
 # git remote -v  # if remote nickname is origin
 # git push -u origin master ( to activate buttons on git panel)
