@@ -12,7 +12,7 @@
 # git remote add origin git@github.com:rpsantosa/sena.git
 
 #first push to force the computer files overwrite those in gitrepository
-git push -f origin master  
+#git push -f origin master  
 
 
 #######to troubleshooting########################
