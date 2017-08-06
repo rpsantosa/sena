@@ -20,6 +20,11 @@
 # git push -u origin master ( to activate buttons on git panel)
 # git status         ( if it is the right directory)
 
+#to remove:
+# git rm -r *
+#git commit -m'message'
+#git push
+
 #probabilities
 out<-vector()
 fs<-function(x){ 1/(choose(6,x)*choose(54,6-x)/choose(60,6))}
